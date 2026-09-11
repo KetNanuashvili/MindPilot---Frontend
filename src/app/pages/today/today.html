@@ -1,0 +1,90 @@
+<section class="page">
+  <header class="hero">
+    <p class="eyebrow">{{ t().todayDate }}</p>
+    <h1>{{ t().todayTitle }}</h1>
+    <p class="lede">{{ t().todayLede }}</p>
+  </header>
+
+  <div class="pulse-grid">
+    <article class="pulse sage">
+      <span>{{ t().energy }}</span>
+      <strong>7 / 10</strong>
+      <small>{{ t().energyNote }}</small>
+    </article>
+    <article class="pulse peach">
+      <span>{{ t().mood }}</span>
+      <strong>{{ t().moodValue }}</strong>
+      <small>{{ t().moodNote }}</small>
+    </article>
+    <article class="pulse sky">
+      <span>{{ t().burnout }}</span>
+      <strong>{{ t().burnoutValue }}</strong>
+      <small>{{ t().burnoutNote }}</small>
+    </article>
+  </div>
+
+  <div class="split">
+    <article class="card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow">{{ t().dailyPlan }}</p>
+          <h2>{{ t().rhythm }}</h2>
+        </div>
+        <a routerLink="/plans" class="text-link">{{ t().fullPlan }}</a>
+      </div>
+
+      <ol class="timeline">
+        @for (block of t().todayBlocks; track block.time) {
+          <li>
+            <time>{{ block.time }}</time>
+            <div>
+              <h3>{{ block.title }}</h3>
+              <p>{{ block.note }}</p>
+              <span class="chip">{{ block.tag }}</span>
+            </div>
+          </li>
+        }
+      </ol>
+    </article>
+
+    <article class="card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow">{{ t().todoList }}</p>
+          <h2>{{ doneCount() }} / {{ todos().length }}</h2>
+        </div>
+      </div>
+
+      <ul class="todos">
+        @for (todo of todos(); track todo.id) {
+          <li>
+            <button type="button" class="check" [class.done]="todo.done" (click)="toggle(todo.id)">
+              <span class="box" aria-hidden="true"></span>
+              <span>{{ label(todo) }}</span>
+            </button>
+          </li>
+        }
+      </ul>
+
+      <form class="composer" (submit)="addTodo($event)">
+        <input
+          type="text"
+          [value]="draft()"
+          (input)="onDraft($event)"
+          [placeholder]="t().todoPlaceholder"
+          [attr.aria-label]="t().todoAria"
+        />
+        <button type="submit" class="primary-btn">{{ t().addTodo }}</button>
+      </form>
+    </article>
+  </div>
+
+  <article class="card ai-card">
+    <div>
+      <p class="eyebrow">{{ t().aiPilot }}</p>
+      <h2>{{ t().todayAiTitle }}</h2>
+      <p>{{ t().todayAiBody }}</p>
+    </div>
+    <a routerLink="/ai" class="primary-btn">{{ t().continueChat }}</a>
+  </article>
+</section>

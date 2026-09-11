@@ -1,0 +1,98 @@
+<section class="page">
+  <header class="hero compact">
+    <p class="eyebrow">{{ t().plansEyebrow }}</p>
+    <h1>{{ t().plansTitle }}</h1>
+    <p class="lede">{{ t().plansLede }}</p>
+  </header>
+
+  <div class="tabs" role="tablist" [attr.aria-label]="t().periodAria">
+    @for (item of periods; track item.id) {
+      <button
+        type="button"
+        role="tab"
+        class="tab"
+        [class.is-active]="period() === item.id"
+        [attr.aria-selected]="period() === item.id"
+        (click)="setPeriod(item.id)"
+      >
+        {{ t()[item.labelKey] }}
+      </button>
+    }
+  </div>
+
+  @if (period() === 'day') {
+    <article class="card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow">{{ t().todayDate }}</p>
+          <h2>{{ t().daySchedule }}</h2>
+        </div>
+        <span class="chip">{{ t().softDay }}</span>
+      </div>
+      <ul class="day-plan">
+        @for (block of t().dayBlocks; track block.time) {
+          <li>
+            <time>{{ block.time }}</time>
+            <div>
+              <h3>{{ block.title }}</h3>
+              <p>{{ block.detail }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+    </article>
+  }
+
+  @if (period() === 'week') {
+    <div class="week-scroll">
+      @for (day of t().weekDays; track day.date; let i = $index) {
+        <article class="card week-card" [class.today]="i === 5" [attr.data-load]="day.load">
+          <header>
+            <span>{{ day.day }}</span>
+            <strong>{{ day.date }}</strong>
+          </header>
+          <ul>
+            @for (item of day.items; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+          <small>{{ loadLabel(day.load) }}</small>
+        </article>
+      }
+    </div>
+  }
+
+  @if (period() === 'month') {
+    <article class="card">
+      <div class="card-head">
+        <div>
+          <p class="eyebrow">2026</p>
+          <h2>{{ t().september }}</h2>
+        </div>
+        <span class="chip">{{ t().plannedDays }}</span>
+      </div>
+      <div class="month-weekdays">
+        @for (day of t().weekdaysShort; track day) {
+          <span>{{ day }}</span>
+        }
+      </div>
+      <div class="month-grid">
+        @for (cell of monthDays; track $index) {
+          <div
+            class="month-cell"
+            [class.empty]="!cell.date"
+            [class.planned]="cell.planned"
+            [class.today]="cell.today"
+          >
+            @if (cell.date) {
+              <span>{{ cell.date }}</span>
+              @if (cell.planned) {
+                <i></i>
+              }
+            }
+          </div>
+        }
+      </div>
+    </article>
+  }
+</section>

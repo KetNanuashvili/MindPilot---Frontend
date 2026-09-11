@@ -1,0 +1,95 @@
+<section class="page">
+  <header class="hero compact">
+    <p class="eyebrow">{{ t().statsEyebrow }}</p>
+    <h1>{{ t().statsTitle }}</h1>
+    <p class="lede">{{ t().statsLede }}</p>
+  </header>
+
+  <div class="tabs" role="tablist" [attr.aria-label]="t().statsAria">
+    <button type="button" class="tab" [class.is-active]="range() === 'week'" (click)="range.set('week')">
+      {{ t().week }}
+    </button>
+    <button type="button" class="tab" [class.is-active]="range() === 'month'" (click)="range.set('month')">
+      {{ t().month }}
+    </button>
+  </div>
+
+  <div class="split">
+    <article class="card score-card">
+      <p class="eyebrow">{{ t().completion }}</p>
+      <div class="score">
+        <div class="ring" [style.--p]="current().percent">
+          <strong>{{ current().percent }}%</strong>
+        </div>
+        <div>
+          <h2>{{ current().done }} / {{ current().total }}</h2>
+          <p>{{ t().completionNote }}</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <p class="eyebrow">{{ t().expenses }}</p>
+      <h2>{{ current().spent }} / {{ current().plannedSpend }} ₾</h2>
+      <div class="bar">
+        <span [style.width.%]="(current().spent / current().plannedSpend) * 100"></span>
+      </div>
+      <p>{{ t().expensesNote }}</p>
+    </article>
+  </div>
+
+  <div class="split">
+    <article class="card">
+      <p class="eyebrow good">{{ t().worked }}</p>
+      <ul class="insight-list">
+        @for (item of insights().worked; track item.title) {
+          <li>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.detail }}</p>
+          </li>
+        }
+      </ul>
+    </article>
+    <article class="card">
+      <p class="eyebrow warn">{{ t().missed }}</p>
+      <ul class="insight-list">
+        @for (item of insights().missed; track item.title) {
+          <li>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.detail }}</p>
+          </li>
+        }
+      </ul>
+    </article>
+  </div>
+
+  <article class="card">
+    <div class="card-head">
+      <div>
+        <p class="eyebrow">{{ t().energy }}</p>
+        <h2>{{ t().energyWave }}</h2>
+      </div>
+    </div>
+    <div class="energy">
+      @for (value of current().energy; track $index) {
+        <div>
+          <span [style.height.%]="value * 10"></span>
+        </div>
+      }
+    </div>
+    <div class="energy-labels">
+      @for (day of t().weekdaysShort; track day) {
+        <span>{{ day }}</span>
+      }
+    </div>
+  </article>
+
+  <article class="card ai-card">
+    <div>
+      <p class="eyebrow">{{ t().aiConclusion }}</p>
+      <h2>{{ range() === 'week' ? t().nextWeekTitle : t().nextMonthTitle }}</h2>
+      <p>{{ t().statsAiBody }}</p>
+    </div>
+    <a routerLink="/ai" class="primary-btn">{{ t().adaptPlan }}</a>
+  </article>
+</section>

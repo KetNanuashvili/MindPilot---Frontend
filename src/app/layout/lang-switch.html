@@ -1,0 +1,8 @@
+<div class="lang-switch" role="group" [attr.aria-label]="i18n.t().language">
+  <button type="button" [class.is-active]="i18n.lang() === 'ka'" (click)="i18n.set('ka')">
+    ქარ
+  </button>
+  <button type="button" [class.is-active]="i18n.lang() === 'en'" (click)="i18n.set('en')">
+    EN
+  </button>
+</div>

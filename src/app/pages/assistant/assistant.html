@@ -1,0 +1,40 @@
+<section class="page assistant-page">
+  <header class="hero compact">
+    <p class="eyebrow">{{ t().aiEyebrow }}</p>
+    <h1>{{ t().aiTitle }}</h1>
+    <p class="lede">{{ t().aiLede }}</p>
+  </header>
+
+  <div class="context-row">
+    <span class="chip">{{ t().chipPlans }}</span>
+    <span class="chip">{{ t().chipTodos }}</span>
+    <span class="chip">{{ t().chipSpend }}</span>
+    <span class="chip">{{ t().chipMood }}</span>
+    <span class="chip">{{ t().chipStats }}</span>
+  </div>
+
+  <article class="card chat-card">
+    <div class="chat">
+      @for (message of messages(); track $index) {
+        <p class="bubble" [class.you]="message.from === 'you'">{{ message.text }}</p>
+      }
+    </div>
+
+    <div class="prompts">
+      @for (prompt of prompts(); track prompt) {
+        <button type="button" class="chip-btn" (click)="send(prompt)">{{ prompt }}</button>
+      }
+    </div>
+
+    <form class="composer composer-fixed" (submit)="$event.preventDefault(); send()">
+      <input
+        type="text"
+        [value]="draft()"
+        (input)="onDraft($event)"
+        [placeholder]="t().aiPlaceholder"
+        [attr.aria-label]="t().aiInputAria"
+      />
+      <button type="submit" class="primary-btn">{{ t().send }}</button>
+    </form>
+  </article>
+</section>
